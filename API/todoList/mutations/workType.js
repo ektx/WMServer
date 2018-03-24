@@ -4,36 +4,47 @@ const {
 	GraphQLNonNull
 } = require('graphql')
 
-const { workType_INT } = require('../types')
+const { baseFields, saveCallbackType } = require('../types/workType')
 const DM = require('../../../models/todolist/workType')
 
-
 const add = {
-	type: GraphQLString,
+	type: saveCallbackType,
 	description: '添加分类',
-	args: {
-		data: {
-			name: 'data',
-			type: workType_INT
-		}
-	},
+	args: baseFields,
 	resolve(root, parmas, req) {
 
 		// 如果有 token 的解码,证明来自客户端口,非测试
 		// 添加用户
-		if (req.decoded)
-			parmas.data.account = req.decoded.user;
+		if (req.decoded) {
+			parmas.account = req.decoded.user;
+		}
+		parmas.id = parmas.account + (new Date()).getTime()
 
-		if (!parmas.data.name) return `not have 'name' value`;
-
-		const model = new DM.workType_M(parmas.data)
-		const newData = model.save()
-
-		if (!newData) throw new Error('添加提醒分类出错')
-
-		return `{"success": true}`
+		if (!parmas.name) 
+			return {
+				mes: `not have 'name' value`,
+				success: false
+			}
+		
+		return new Promise((resole, reject) => {
+			const model = new DM.workType_M(parmas)
+			model.save((err, data) => {
+				if (err) {
+					reject({
+						success: false,
+						mes: '添加提醒分类出错',
+						id: null
+					})
+					return
+				}
+				resole( {
+					success: true,
+					mes: '添加成功',
+					id: parmas.id
+				})
+			})
+		})
 	}
-
 }
 
 
