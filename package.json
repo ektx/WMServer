@@ -1,0 +1,21 @@
+{
+  "name": "workman-server",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "ektx",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node index.js dev",
+    "start": "node index.js prod"
+  },
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "chalk": "^2.3.0",
+    "cors": "^2.8.4",
+    "express": "^4.15.3",
+    "express-graphql": "^0.6.7",
+    "graphql": "^0.13.1",
+    "jsonwebtoken": "^7.4.3",
+    "mongoose": "^4.11.7"
+  }
+}
