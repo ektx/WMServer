@@ -1,7 +1,7 @@
 
+console.log('myFriends models db.js')
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
-
 /**
  * 通讯录功能
  * @param {String} account - 账号
@@ -35,6 +35,6 @@ const _myfriends = new Schema({
 	ctime: Date,
 	mtime: Date,
 	remark: String
-}, {collection: 'myFriends', versionKey: false});
+}, {collection: 'myFriends', versionKey: false})
 
-module.exports = mongoose.model('myFriends', _myfriends);
+module.exports = mongoose.model('myFriends', _myfriends)
