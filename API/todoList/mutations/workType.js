@@ -5,20 +5,23 @@ const {
 } = require('graphql')
 
 const { baseFields, saveCallbackType } = require('../types/workType')
-const DM = require('../../../models/todolist/workType')
+const { workTypeDB } = require('../models')
 
 const add = {
 	type: saveCallbackType,
 	description: '添加分类',
 	args: baseFields,
 	resolve(root, parmas, req) {
+		// 自动添加创建时间
+		parmas.ctime = new Date()
 
 		// 如果有 token 的解码,证明来自客户端口,非测试
 		// 添加用户
 		if (req.decoded) {
 			parmas.account = req.decoded.user;
 		}
-		parmas.id = parmas.account + (new Date()).getTime()
+
+		parmas.id = parmas.account + parmas.ctime.getTime()
 
 		if (!parmas.name) 
 			return {
@@ -27,7 +30,7 @@ const add = {
 			}
 		
 		return new Promise((resole, reject) => {
-			const model = new DM.workType_M(parmas)
+			const model = new workTypeDB(parmas)
 			model.save((err, data) => {
 				if (err) {
 					reject({

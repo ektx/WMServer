@@ -14,6 +14,10 @@ const fieldsObj = {
 	name: {
 		type: GraphQLString,
 		description: '名称',
+	},
+	ctime: {
+		type: GraphQLString,
+		description: '创建时间'
 	}
 }
 exports.baseFields = fieldsObj
