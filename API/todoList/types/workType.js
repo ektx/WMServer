@@ -14,10 +14,6 @@ const fieldsObj = {
 	name: {
 		type: GraphQLString,
 		description: '名称',
-	},
-	ctime: {
-		type: GraphQLString,
-		description: '创建时间'
 	}
 }
 exports.baseFields = fieldsObj
@@ -30,6 +26,10 @@ const workType = new GraphQLObjectType({
 		id: {
 			type: GraphQLString,
 			description: '事件类型 ID',
+		},
+		ctime: {
+			type: GraphQLString,
+			description: '创建时间'
 		}
 	}))
 })

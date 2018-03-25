@@ -19,6 +19,13 @@ const add = {
 		// 添加用户
 		if (req.decoded) {
 			parmas.account = req.decoded.user;
+		} else {
+			if (!parmas.account) {
+				return {
+					success: false,
+					mes: '请输入用户'
+				}
+			}
 		}
 
 		parmas.id = parmas.account + parmas.ctime.getTime()
@@ -28,7 +35,7 @@ const add = {
 				mes: `not have 'name' value`,
 				success: false
 			}
-		
+
 		return new Promise((resole, reject) => {
 			const model = new workTypeDB(parmas)
 			model.save((err, data) => {
