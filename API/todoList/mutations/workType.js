@@ -4,7 +4,11 @@ const {
 	GraphQLNonNull
 } = require('graphql')
 
-const { baseFields, saveCallbackType } = require('../types/workType')
+const { 
+	baseFields, 
+	saveCallbackType, 
+	updateCallback 
+} = require('../types/workType')
 const { workTypeDB } = require('../models')
 
 const add = {
@@ -18,7 +22,7 @@ const add = {
 		// 如果有 token 的解码,证明来自客户端口,非测试
 		// 添加用户
 		if (req.decoded) {
-			parmas.account = req.decoded.user;
+			parmas.account = req.decoded.user
 		} else {
 			if (!parmas.account) {
 				return {
@@ -99,7 +103,7 @@ const remove = {
 
 
 const update = {
-	type: GraphQLString,
+	type: updateCallback,
 	description: '更新提醒分类',
 	args: {
 		id: {
@@ -109,30 +113,49 @@ const update = {
 		},
 		name: {
 			name: 'name',
-			type: GraphQLString,
+			type: new GraphQLNonNull(GraphQLString),
 			description: '重新命名'
+		},
+		account: {
+			type: GraphQLString,
+			description: '用户'
 		}
 	},
-	resolve(root, params) {
-		
-		let update = new Promise((resolve, reject) => {
-			DM.workType_M.update(
-				{ id: params.id },
-				{name: params.name},
-				(err, data) => {
+	resolve(root, parameter, req) {
+		// 如果有 token 的解码,证明来自客户端口,非测试
+		// 添加用户
+		if (req.decoded) {
+			parameter.account = req.decoded.user
+		} else {
+			if (!parameter.account) {
+				return {
+					success: false,
+					mes: '请输入用户'
+				}
+			}
+		}
 
+		return new Promise((resolve, reject) => {
+			workTypeDB.update(
+				{ id: parameter.id },
+				{name: parameter.name},
+				(err, data) => {
 					if (err) {
-						reject(JSON.stringify(err));
-						return;
+						reject({
+							success: false,
+							mes: '更新失败'
+						})
+						return
 					}
-					resolve(JSON.stringify(data))
+
+					resolve({
+						success: true,
+						mes: '更新成功'
+					})
 				}
 			)
 		})
-
-		return update
 	}
-
 }
 
 module.exports = {

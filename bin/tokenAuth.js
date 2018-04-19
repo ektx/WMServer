@@ -9,17 +9,16 @@ const tokenKey = 'expressTokenTest'
 
 function authToken(req, res, next) {
 	
-	const token = req.body.token || req.query.token || req.headers['x-access-token'] || req.headers['X-Access-Token'];
+	const token = req.body.token || req.query.token || req.headers['x-access-token'] || req.headers['X-Access-Token']
 
 	// 对于添加用户 不需要验证token
 	if (req.body.query.includes('userAdd')) {
-		return next();
+		return next()
 	}
 
 	if (token) {
-
 		jwt.verify(token, tokenKey, (err, decoded) => {
-			if (err) {
+			if (err || req.headers['user-agent'] !== decoded.userAgent) {
 				return res.send({
 					status: false,
 					code: 10000,
@@ -38,4 +37,4 @@ function authToken(req, res, next) {
 	}
 }
 
-module.exports = authToken;
+module.exports = authToken

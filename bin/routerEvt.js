@@ -4,12 +4,12 @@ const db_schemas = require('../API/user/models/user');
 const jwt = require('jsonwebtoken')
 const tokenKey = 'expressTokenTest'
 
-/*
-	登录功能
-	-------------------------------
-*/
+/**
+ * 登录功能
+ * @param {object} req 请求信息
+ * @param {object} res 返回信息
+ */
 function PostLogin (req, res) {
-	console.log(req.body)
 
 	let sendErr = ()=> {
 		res.send({
@@ -31,10 +31,13 @@ function PostLogin (req, res) {
 
 			if (data) {
 				if (data.pwd === req.body.pwd) {
+					let obj = Object.assign({}, req.body, {
+						userAgent: req.headers['user-agent']
+					})
 
 					// 添加一个 token
-					let token = jwt.sign(req.body, tokenKey, {
-						expiresIn: 7200 // 在 2 小时后过期 60 * 60 *2
+					let token = jwt.sign(obj, tokenKey, {
+						expiresIn: 60 * 60 // 在 1 小时后过期 60 * 60
 					})
 
 					res.send({
@@ -59,7 +62,7 @@ function PostLogin (req, res) {
 	)
 }
 
-exports.login = PostLogin;
+exports.login = PostLogin
 
 
 exports.GetLogin = (req, res) => {

@@ -9,11 +9,11 @@ const { callbackTypeFields } = require('../../types')
 const fieldsObj = {
 	account: {
 		type: GraphQLString,
-		description: '用户',
+		description: '用户'
 	},
 	name: {
 		type: GraphQLString,
-		description: '名称',
+		description: '名称'
 	}
 }
 exports.baseFields = fieldsObj
@@ -45,7 +45,7 @@ exports.workTypeIntType = workTypeIntType
 
 
 const saveCallbackType = new GraphQLObjectType({
-	name: 'callbackType',
+	name: 'saveCallbackType',
 	description: '保存返回信息',
 	fields: () => (Object.assign({}, callbackTypeFields, {
 		id: {
@@ -55,3 +55,10 @@ const saveCallbackType = new GraphQLObjectType({
 	}))
 })
 exports.saveCallbackType = saveCallbackType
+
+
+exports.updateCallback = new GraphQLObjectType({
+	name: 'updateCallback',
+	description: '更新事件类型返回信息',
+	fields: () => (Object.assign({}, callbackTypeFields))
+})
