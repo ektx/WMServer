@@ -14,9 +14,7 @@ const serverType = process.argv[2]
 const dbURL = 'mongodb://localhost/' + (serverType === 'dev' ? 'workman_t' : 'workman')
 
 // 连接数据库
-mongoose.connect(dbURL, {
-  useMongoClient: true
-}).then(
+mongoose.connect(dbURL).then(
   () => {
     console.log(chalk.green('数据库链接完成'))
   },

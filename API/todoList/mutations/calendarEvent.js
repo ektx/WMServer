@@ -112,22 +112,23 @@ const save = {
 }
 
 
-/*
-	options
-	-----------------------------
-	@account 用户
-	@id 更新类别
-	@type 'add(加,默认) | del(减)'
-	@stime 开始时间
-	@etime 结束时间
-*/
+/**
+ * 更新日历事件
+ * options 更新内容
+ * @param {string} account 用户
+ * @param {string} id 更新类别
+ * @param {string} type add(加,默认) | del(减)
+ * @param {string} stime 开始时间
+ * @param {date} stime 开始时间
+ * @param {date} etime 结束时间
+ */
 function updateDB (options) {
-
+	console.log(options)
 	// 设置 type
-	options.type = options.type && options.type === 'del' ? -1 : 1;
+	options.type = options.type && options.type === 'del' ? -1 : 1
 
 	// 获取2个时间点间的日期与天数
-	let updateCalTime = calendar.howMonths(options.stime, options.etime);
+	let updateCalTime = calendar.howMonths(options.stime, options.etime)
 
 	// 更新数据库
 	function setCalendarEvent (account, id, time, data) {

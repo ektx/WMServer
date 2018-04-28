@@ -37,7 +37,7 @@ function PostLogin (req, res) {
 
 					// 添加一个 token
 					let token = jwt.sign(obj, tokenKey, {
-						expiresIn: 60 * 60 // 在 1 小时后过期 60 * 60
+						expiresIn: 60 * 60 // 60 * 60 // 在 1 小时后过期 60 * 60
 					})
 
 					res.send({

@@ -5,45 +5,57 @@ const {
 	GraphQLObjectType
 } = require('graphql')
 
-const db = require('../../../models/todolist/events')
+// const db = require('../../../models/todolist/events')
 const { 
 	events_INT, 
 	evtUpdate_INT,
 	evtSave_FB,
 	saveCalendar_FB 
 } = require('../types')
+const {
+	addEvtIntType
+} = require('../types/events')
 
+const db = require('../models/events')
 const calendarEvt = require('./calendarEvent')
 
-
-const add = {
+exports.todo_evt_add = {
 	type: GraphQLString,
-	description: '添加事件',
+	description: '事件添加',
 	args: {
+		usr: {
+			type: GraphQLString,
+			description: '用户'
+		},
 		data: {
-			name: 'data',
-			type: events_INT
+			type: addEvtIntType,
+			description: '保存信息'
 		}
 	},
-	resolve(root, parmas, req) {
-		
-		// 复杂化id 用于确保不会有相同
-		parmas.data.account = (req.decoded ? req.decoded.user : parmas.data.account);
-		parmas.data.id = `${parmas.data.id}_${parmas.data.account}`;
+	resolve(root, args, req) {
+		let account = req.decoded ? req.decoded.user : args.usr
+		let time = new Date
 
-		calendarEvt.updateDB({
-			account: parmas.data.account,
-			id: parmas.data.eventTypeID,
-			stime: parmas.data.stime,
-			etime: parmas.data.etime
+		Object.assign(args.data, {
+			account,
+			id: `${+ time}_${account}`,
+			ctime: time,
+			mtime: time
 		})
 
-		const model = new db(parmas.data)
+		calendarEvt.updateDB({
+			account: args.usr,
+			id: args.data.id,
+			stime: args.data.stime,
+			etime: args.data.etime
+		})
+
+		const model = new db(args.data)
 		const newData = model.save()
 
-		if (!newData) throw new Error('添加事件出错')
+		if (!newData) return `{success: false}`
 
-		return `{"success": true, "msg": "添加成功", "id": "${parmas.data.id}"}`
+		return `{"success": true, "msg": "添加成功", "id": "${args.data.id}"}`
 	}
 
 }
@@ -137,7 +149,7 @@ const save = {
 		// 应用用户
 		pargs.account = req.decoded ? req.decoded.user : pargs.account;
 		
-		let ID = pargs.id.endsWith(pargs.account) ? pargs.id : pargs.id +'_'+ pargs.account;
+		let ID = pargs.id.endsWith(pargs.account) ? pargs.id : `${pargs.id}_${pargs.account}`;
 
 		// 
 		function findData() {
@@ -234,8 +246,7 @@ const save = {
 
 }
 
-module.exports = {
-	add,
+exports = {
 	remove,
 	save,
 }

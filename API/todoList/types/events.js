@@ -10,18 +10,49 @@ const {
 	saveCalendar_feedback
 } = require('../types/calendarEvent')
 
+let evtBaseInfo = {
+	eventTypeID: {
+		type: GraphQLString,
+		description: '事件类别 ID'
+	},
+	title: {
+		type: GraphQLString,
+		description: '标题'
+	},
+	complete: {
+		type: GraphQLBoolean,
+		description: '是否完成'
+	},
+	// ttime: {
+	// 	type: GraphQLString,
+	// 	description: '提醒时间, new Date().toISOString() => "2017-08-30T03:04:14.162Z"'
+	// },
+	stime: {
+		type: GraphQLString,
+		description: '开始时间, "2017-08-30T03:04:14.162Z"'
+	},
+	etime: {
+		type: GraphQLString,
+		description: '结束时间, "2017-08-30T03:04:14.162Z"'
+	},
+	inner: {
+		type: GraphQLString,
+		description: 'inner'
+	}	
+}
+
 const fieldsObj = {
 	id: {
 		type: GraphQLString,
 		description: '事件ID'
 	},
 	account: {
-	  type: GraphQLString,
-    description: '用户'
+		type: GraphQLString,
+		description: '用户'
 	},
 	eventTypeID: {
-	  type: GraphQLString,
-	  description: '事件类别 ID'
+		type: GraphQLString,
+		description: '事件类别 ID'
 	},
 	title: {
 		type: GraphQLString,
@@ -73,6 +104,12 @@ const eventsIntType = new GraphQLInputObjectType({
 	fields: () => (fieldsObj)
 })
 exports.events_INTTYPE = eventsIntType
+
+exports.addEvtIntType = new GraphQLInputObjectType({
+	name: 'todo_evt_add_int',
+	description: '添加事件',
+	fields: () => (evtBaseInfo)
+})
 
 
 const updateEventIntType = new GraphQLInputObjectType({

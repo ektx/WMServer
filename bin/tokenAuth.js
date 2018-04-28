@@ -19,7 +19,7 @@ function authToken(req, res, next) {
 	if (token) {
 		jwt.verify(token, tokenKey, (err, decoded) => {
 			if (err || req.headers['user-agent'] !== decoded.userAgent) {
-				return res.send({
+				return res.status(401).send({
 					status: false,
 					code: 10000,
 					message: "token认证失败"
