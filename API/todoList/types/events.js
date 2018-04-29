@@ -105,6 +105,7 @@ const eventsIntType = new GraphQLInputObjectType({
 })
 exports.events_INTTYPE = eventsIntType
 
+// new
 exports.addEvtIntType = new GraphQLInputObjectType({
 	name: 'todo_evt_add_int',
 	description: '添加事件',
@@ -149,30 +150,3 @@ const updateEventIntType = new GraphQLInputObjectType({
 exports.updateEvent_INTTYPE = updateEventIntType
 
 
-// 保存返回信息
-const saveFeedback = new GraphQLObjectType({
-	name: 'saveFeedback',
-	description: '保存返回信息',
-	fields: () => ({
-		id: {
-			type: GraphQLString,
-			description: '事件 ID'
-		},
-		addTime: {
-			// 时间返回 type
-			type: saveCalendar_feedback,
-			description: '日历添加时间'
-		},
-		delTime: {
-			// 时间返回 type
-			type: saveCalendar_feedback,
-			description: '日历删除时间'
-		},
-		save: {
-			type: GraphQLString,
-			description: '事件数据保存信息'
-		}
-	})
-})
-
-exports.saveFeedback = saveFeedback

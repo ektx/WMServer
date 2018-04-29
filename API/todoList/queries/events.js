@@ -4,7 +4,7 @@ const {
   GraphQLInt
 } = require('graphql')
 
-const db = require('../../../models/todolist/events')
+const db = require('../models/events')
 const { events } = require('../types')
 
 module.exports = {

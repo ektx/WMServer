@@ -10,7 +10,7 @@ module.exports = {
 	// 事件更新
 	evtUpdate_INT: evt.updateEvent_INTTYPE,
 	// 保存返回信息格式
-	evtSave_FB: evt.saveFeedback,
+	// evtSave_FB: evt.saveFeedback,
 
 	query_calendarEvent_FB: calendarEvt.query_calendarEvent_feedback,
 

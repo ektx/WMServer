@@ -14,7 +14,7 @@ module.exports = {
 	updateTodoListType: todolist.updateWorkType,
 
 	// todoList - 日历功能
-	saveCalendarEvent: todolist.saveCalendarEvent,
+	// saveCalendarEvent: todolist.saveCalendarEvent,
 	removeCalendarEvent: todolist.removeCalendarEvent,
 
 	// todoList - 事件功能

@@ -8,8 +8,9 @@ module.exports = {
 	removeWorkType: workType.remove,
 	updateWorkType: workType.update,
 
-	saveCalendarEvent: calendarEvent.save,
+	// saveCalendarEvent: calendarEvent.save,
 	removeCalendarEvent: calendarEvent.remove,
+	...calendarEvent,
 
 	// todoEvent_add: events.add,
 	// saveTodoListEvent: events.save,

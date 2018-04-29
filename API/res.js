@@ -4,7 +4,7 @@ const {
     GraphQLBoolean,
 } = require('graphql')
 
-const callbackTypeFields = {
+const resObj = {
     success: {
         type: GraphQLBoolean,
         description: '成功失败'
@@ -14,5 +14,10 @@ const callbackTypeFields = {
         description: '说明信息'
     }
 }
+exports.resObj = resObj
 
-exports.callbackTypeFields = callbackTypeFields
+exports.resGQ = new GraphQLObjectType({
+    name: 'resFeedbackBaseMod',
+    description: '默认返回基础请求格式',
+    fields: () => (resObj)
+})

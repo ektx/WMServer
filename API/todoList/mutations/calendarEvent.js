@@ -7,8 +7,7 @@ const {
 const { saveCalendar_FB } = require('../types')
 
 const db = require('../../../models/todolist/calendarEvent')
-const calendar = require('../../../bin/calendar')
-
+const { updateDB } = require('./calendarFun')
 /*
 	使用示例:
 	mutation {
@@ -64,8 +63,8 @@ const remove = {
 		saveCalendarEvent(
 			account: "ektx",
 			id: "1504493147795",
-			stime: "2017-9-10",
-			etime: "2018-9-11",
+			stime: "2017/9/10",
+			etime: "2018/9/11",
 			type: "del"
 		)
 	}
@@ -87,12 +86,12 @@ const save = {
 		stime: {
 			name: 'stime',
 			type: new GraphQLNonNull(GraphQLString),
-			description: '开始时间,如: 2017-9-10'
+			description: '开始时间,如: 2017/9/10'
 		},
 		etime: {
 			name: 'etime',
 			type: new GraphQLNonNull(GraphQLString),
-			description: '结束时间,如: 2017-10-1'
+			description: '结束时间,如: 2017/10/1'
 		},
 		type: {
 			name: 'type',
@@ -105,106 +104,13 @@ const save = {
 		pargs.account = req.decoded ? req.decoded.user : pargs.account;
 
 		// 更新数据库
-		return (async function () {
+		return (async () => {
 			return await updateDB(pargs)
-		}())
+		})()
 	}
 }
-
-
-/**
- * 更新日历事件
- * options 更新内容
- * @param {string} account 用户
- * @param {string} id 更新类别
- * @param {string} type add(加,默认) | del(减)
- * @param {string} stime 开始时间
- * @param {date} stime 开始时间
- * @param {date} etime 结束时间
- */
-function updateDB (options) {
-	console.log(options)
-	// 设置 type
-	options.type = options.type && options.type === 'del' ? -1 : 1
-
-	// 获取2个时间点间的日期与天数
-	let updateCalTime = calendar.howMonths(options.stime, options.etime)
-
-	// 更新数据库
-	function setCalendarEvent (account, id, time, data) {
-		
-		return new Promise((resolve, reject) => {
-			db.update(
-				{
-					account: account,
-					eventTypeID: id,
-					time: time
-				},
-				{$inc: data},
-				// 不存在时添加
-				{upsert: true},
-				(err, data) => {
-
-					if (err) {
-						reject( err )
-						return;
-					}
-
-					resolve( data )
-				}
-			)
-		})
-	}
-
-	// 遍历天
-	function loopCalTime (data) {
-
-		let setData = {};
-
-		// 格式化要更新的天数
-		data.day.forEach((val, index) => {
-			setData[`data.${val}`] = options.type
-		});
-
-
-		// 返回要更新的月份
-		return setCalendarEvent(
-			options.account,
-			options.id,
-			data.time,
-			setData
-		)
-	}
-
-	// 更新
-	async function updateDBCalTime() {
-		
-		let updatePromise = [];
-		let backDay = []; // 返回日期
-		let result = {}; // 返回结果
-
-		updateCalTime.forEach(val => {
-			backDay.push( val )
-			updatePromise.push( loopCalTime(val) )
-		})
-
-		// 保存信息
-		result.save = JSON.stringify( await Promise.all(updatePromise) );
-
-		// 返回天数
-		result.time = backDay;
-
-		return result
-	}
-
-	return updateDBCalTime()
-}
-
 
 module.exports = {
 	remove,
-	save,
-
-	updateDB
+	save
 }
-
