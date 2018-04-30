@@ -59,7 +59,7 @@ exports.todo_evt_add = {
 
 		return (async () => {
 			const calendar = await updateEvtCalendar({
-				account: args.usr,
+				account: account,
 				id: args.data.eventTypeID,
 				stime: args.data.stime,
 				etime: args.data.etime
