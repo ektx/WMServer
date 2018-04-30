@@ -11,7 +11,7 @@ const db = require('../../../models/todolist/calendarEvent')
  * @param {date} stime 开始时间
  * @param {date} etime 结束时间
  */
-exports.updateDB = function (options) {
+exports.updateEvtCalendar = function (options) {
 	// 设置 type
 	options.type = options.type && options.type === 'del' ? -1 : 1
 
@@ -48,6 +48,7 @@ exports.updateDB = function (options) {
 		}
 
 		updateCalTime.forEach(val => {
+            console.log(val)
 			backDay.push( val )
 			updatePromise.push( loopCalTime(val) )
 		})

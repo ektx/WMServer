@@ -1,6 +1,6 @@
 
 const user = require('./user/mutations')
-const todolist = require('./todolist/mutations')
+const todolist = require('./todoList/mutations')
 const address = require('./myFriends/mutations')
 
 module.exports = {

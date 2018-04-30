@@ -1,10 +1,10 @@
-
 const {
 	GraphQLObjectType,
 	GraphQLInputObjectType,
 	GraphQLString,
 	GraphQLList,
-} = require('graphql');
+	GraphQLInt
+} = require('graphql')
 
 const fieldsObj = {
 	account: {
@@ -89,3 +89,19 @@ const saveCalendar_feedback = new GraphQLObjectType({
 	fields: () => (saveAndRemove_fields)
 })
 exports.saveCalendar_feedback = saveCalendar_feedback;
+
+// 用于查询输出功能
+exports.todoCalendarType = new GraphQLObjectType({
+	name: 'todoCalendarType',
+	description: '事件日历返回信息',
+	fields: () => ({
+		time: {
+			description: '年月',
+			type: GraphQLString
+		},
+		days: {
+			description: '对应的天内容',
+			type: GraphQLString
+		}
+	})
+})

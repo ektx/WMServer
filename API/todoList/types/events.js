@@ -6,6 +6,7 @@ const {
 	GraphQLInt
 } = require('graphql')
 
+
 const {
 	saveCalendar_feedback
 } = require('../types/calendarEvent')
@@ -88,14 +89,12 @@ const fieldsObj = {
 	}
 }
 
-
-const eventsType = new GraphQLObjectType({
-	name: 'events',
-	description: '--',
+// use
+exports.find_todoEvent_type = new GraphQLObjectType({
+	name: 'todoEvent_type',
+	description: '事件查询格式',
 	fields: () => (fieldsObj)
 })
-
-exports.events_TYPE = eventsType
 
 
 const eventsIntType = new GraphQLInputObjectType({
@@ -105,7 +104,7 @@ const eventsIntType = new GraphQLInputObjectType({
 })
 exports.events_INTTYPE = eventsIntType
 
-// new
+// use
 exports.addEvtIntType = new GraphQLInputObjectType({
 	name: 'todo_evt_add_int',
 	description: '添加事件',

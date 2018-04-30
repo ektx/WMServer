@@ -2,6 +2,7 @@ const {
 	GraphQLString,
 	GraphQLNonNull,
 	GraphQLInt,
+	GraphQLList,
 	GraphQLObjectType
 } = require('graphql')
 const { 
@@ -11,13 +12,14 @@ const {
 	saveCalendar_FB 
 } = require('../types')
 const {
-	addEvtIntType
+	addEvtIntType,
+	find_todoEvent_type,	
 } = require('../types/events')
 
 const db = require('../models/events')
 const calendarEvt = require('./calendarEvent')
 const { resGQ, resObj } = require('../../res')
-const { updateDB } = require('./calendarFun')
+const { updateEvtCalendar } = require('./calendarFun')
 
 exports.todo_evt_add = {
 	type: new GraphQLObjectType({
@@ -25,9 +27,9 @@ exports.todo_evt_add = {
 		description: '保存事件',
 		fields: () => ({
 			...resObj,
-			id: {
-				type: GraphQLString,
-				description: '添加成功后的事件 ID'
+			data: {
+				description: '添加成功后的事件 ID',
+				type: GraphQLString
 			}
 		})
 	}),
@@ -53,23 +55,29 @@ exports.todo_evt_add = {
 			mtime: time
 		})
 
-		updateDB({
-			account: args.usr,
-			id: args.data.eventTypeID,
-			stime: args.data.stime,
-			etime: args.data.etime
-		})
-
 		const model = new db(args.data)
-		const newData = model.save()
 
-		if (!newData) return { success: false }
+		return (async () => {
+			const calendar = await updateEvtCalendar({
+				account: args.usr,
+				id: args.data.eventTypeID,
+				stime: args.data.stime,
+				etime: args.data.etime
+			})
 
-		return {
-			success: true, 
-			msg: "添加成功", 
-			id: args.data.id
-		}
+			if (!calendar.success) {
+				return { success: false }
+			}
+
+			const event = await model.save()
+
+			if (!event) return { success: false }
+			else return {
+				success: true,
+				mes: '添加成功',
+				data: event.id
+			}
+		})()
 	}
 
 }
@@ -95,7 +103,7 @@ exports.todo_evt_remove = {
 			let removeEvt = await removeData(args.id, args.usr)
 
 			if (removeEvt.success) {
-				removeEvt = await updateDB({
+				removeEvt = await updateEvtCalendar({
 					account: removeEvt.data.account,
 					id: removeEvt.data.eventTypeID,
 					stime: removeEvt.data.stime,
@@ -199,7 +207,7 @@ exports.todo_evt_update = {
 					args.eventTypeID !== findThisData.eventTypeID
 				) {
 					// 删除旧的时间
-					result.delTime = await updateDB({
+					result.delTime = await updateEvtCalendar({
 						account: args.usr,
 						id: findThisData.eventTypeID,
 						stime: findThisData.stime,
@@ -207,7 +215,7 @@ exports.todo_evt_update = {
 						type: 'del'
 					})
 					// 添加新的时间
-					result.addTime = await updateDB({
+					result.addTime = await updateEvtCalendar({
 						account: args.usr,
 						id: args.data.eventTypeID,
 						stime: args.data.stime,

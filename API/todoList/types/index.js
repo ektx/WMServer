@@ -4,13 +4,14 @@ const W = require('./workType')
 
 module.exports = {
 	// 事件查询
-	events: evt.events_TYPE,
+	// events: evt.events_TYPE,
 	// 事件创建
-	events_INT: evt.events_INTTYPE,
+	// events_INT: evt.events_INTTYPE,
 	// 事件更新
-	evtUpdate_INT: evt.updateEvent_INTTYPE,
+	// evtUpdate_INT: evt.updateEvent_INTTYPE,
 	// 保存返回信息格式
 	// evtSave_FB: evt.saveFeedback,
+	// ...evt,
 
 	query_calendarEvent_FB: calendarEvt.query_calendarEvent_feedback,
 

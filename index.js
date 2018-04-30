@@ -9,6 +9,8 @@ mongoose.Promise = global.Promise
 
 const tokenAuth = require('./bin/tokenAuth')
 
+global.OS_TypeFiles = []
+
 // 环境情况
 const serverType = process.argv[2]
 const dbURL = 'mongodb://localhost/' + (serverType === 'dev' ? 'workman_t' : 'workman')

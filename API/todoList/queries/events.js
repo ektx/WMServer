@@ -5,10 +5,14 @@ const {
 } = require('graphql')
 
 const db = require('../models/events')
-const { events } = require('../types')
+
+const {
+	addEvtIntType,
+	find_todoEvent_type,	
+} = require('../types/events')
 
 module.exports = {
-  type: new GraphQLList(events),
+  type: new GraphQLList(find_todoEvent_type),
   description: '查询事件列表',
   args: {
     account: {

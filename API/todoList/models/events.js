@@ -1,6 +1,7 @@
-const RGM = require('../../registrationModel')
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-module.exports = RGM('todoList_events', {
+const mySchema = new Schema({
     // 唯一的区别
     id: {
         type: String,
@@ -33,4 +34,6 @@ module.exports = RGM('todoList_events', {
     etime: Date,
     // 内容
     inner: String
-})
+}, {collection: 'todoList_events', versionKey: false})
+
+module.exports = mongoose.model('todoList_events', mySchema)

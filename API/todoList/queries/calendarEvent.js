@@ -4,7 +4,7 @@ const {
 } = require('graphql')
 
 const db = require('../../../models/todolist/calendarEvent')
-const { query_calendarEvent_FB } = require('../types')
+const { todoCalendarType } = require('../types/calendarEvent')
 
 /*
 	示例:
@@ -17,7 +17,7 @@ const { query_calendarEvent_FB } = require('../types')
 	}
 */
 module.exports = {
-	type: query_calendarEvent_FB,
+	type: todoCalendarType,
 	description: '查询某月提醒事件列表',
 	args: {
 		account: {
@@ -64,7 +64,7 @@ module.exports = {
 
 					resolve({
 						time: data.time,
-						day: JSON.stringify( data.data[0] )
+						days: JSON.stringify(data.data[0])
 					})
 				}
 			)
