@@ -5,6 +5,8 @@ const chalk = require('chalk')
 const graphqlHTTP = require('express-graphql')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const multer = require('multer')
+
 mongoose.Promise = global.Promise
 
 const tokenAuth = require('./bin/tokenAuth')
@@ -44,6 +46,12 @@ app.use(bodyParser.json())
 // 注意 router 要在 bodyParser 之后调用
 // 否则无法取到 req.body
 app.use(router)
+
+app.post('/upload', multer({
+  dist: 'uploads/'
+}).array('photos', 9), (req, res, next) => {
+  console.log(req.files, req.body)
+})
 
 const schema = require('./API/')
 
