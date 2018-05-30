@@ -5,6 +5,6 @@ const calendarEvent = require('./calendarEvent')
 
 module.exports = {
   workTypes,
-  events,
+  ...events,
   calendarEvent
 }
