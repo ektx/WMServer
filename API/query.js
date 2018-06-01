@@ -5,7 +5,7 @@ const todoList = require('./todoList/queries')
 const myFriends = require('./myFriends/queries')
 console.log(todoList.events)
 module.exports = {
-  user,
+  ...user,
 
   workTypes: todoList.workTypes,
   calendarEvent: todoList.calendarEvent,

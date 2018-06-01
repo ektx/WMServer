@@ -29,4 +29,4 @@ const _usrs = new Schema({
 	reset  : String
 }, {collection: 'usrs', versionKey: false});
 
-exports.usrs_m = mongoose.model('usrs', _usrs);
+module.exports = mongoose.model('usrs', _usrs);

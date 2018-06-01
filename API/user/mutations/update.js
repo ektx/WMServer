@@ -1,5 +1,5 @@
 const { GraphQLNonNull, GraphQLString, GraphQLList } = require('graphql')
-const { userType, userIntputType } = require('../types/user')
+const { userType, userIntputType } = require('../types')
 
 const db = require('../models/user')
 
@@ -21,7 +21,7 @@ module.exports = {
 	resolve(root, params) {
 
 		let update = new Promise((resolve, reject) => {
-			db.usrs_m.findOneAndUpdate(
+			db.findOneAndUpdate(
 				{ account: params.account },
 				params.data,
 				(err, data) => {

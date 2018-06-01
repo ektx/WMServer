@@ -2,9 +2,9 @@ const { GraphQLString } = require('graphql')
 
 const db = require('../models/user')
 
-const { userType } = require('../types/user')
+const { userType } = require('../types')
 
-module.exports = {
+exports.findUser = {
 	type: userType,
 	description: '查询用户信息',
 	args: {
@@ -23,10 +23,10 @@ module.exports = {
 	},
 	resolve(root, params) {
 		// 回调
-	    let foundItems = new Promise((resolve, reject) => {
+	    return new Promise((resolve, reject) => {
 	    	// mongoose 查询方式
 	    	// 查询用户名或帐号
-			db.usrs_m.findOne(
+			db.findOne(
 			{ $or: [ 
 				{account: params.account }, 
 				{name: params.name} 
@@ -35,8 +35,5 @@ module.exports = {
 				err ? reject(err) : resolve(data)
 			})
 		})
-
-
-		return foundItems 
 	}
 }

@@ -7,14 +7,14 @@
 const jwt = require('jsonwebtoken')
 const tokenKey = 'expressTokenTest'
 
-function authToken(req, res, next) {
+module.exports = function (req, res, next) {
 	
 	const token = req.body.token || req.query.token || req.headers['x-access-token'] || req.headers['X-Access-Token']
 
 	// 对于添加用户 不需要验证token
-	if (req.body.query.includes('userAdd')) {
-		return next()
-	}
+	// if (req.body.query && req.body.query.includes('userAdd')) {
+	// 	return next()
+	// }
 
 	if (token) {
 		jwt.verify(token, tokenKey, (err, decoded) => {
@@ -25,7 +25,7 @@ function authToken(req, res, next) {
 					message: "token认证失败"
 				})
 			} else {
-				req.decoded = decoded;
+				req.decoded = decoded
 				next()
 			}
 		})
@@ -36,5 +36,3 @@ function authToken(req, res, next) {
 		})
 	}
 }
-
-module.exports = authToken

@@ -1,5 +1,5 @@
 const { GraphQLNonNull, GraphQLString } = require('graphql')
-const { userIntputType } = require('../types/user')
+const { userIntputType } = require('../types')
 
 const db = require('../models/user')
 
@@ -22,7 +22,7 @@ module.exports = {
 	resolve(root, params) {
 		
 		let removeUser = new Promise( (resolve, reject) => {
-			db.usrs_m.remove(
+			db.remove(
 				{account: params.account, pwd: params.passwd}, 
 				(err, data) => {
 					data.result.n ? resolve('remove user!') : reject(err);

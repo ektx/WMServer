@@ -1,6 +1,5 @@
 
-const db_schemas = require('../API/user/models/user');
-
+const db_schemas = require('./models/user');
 const jwt = require('jsonwebtoken')
 const tokenKey = 'expressTokenTest'
 
@@ -18,7 +17,7 @@ function PostLogin (req, res) {
 		})
 	}
 
-	db_schemas.usrs_m.findOne(
+	db_schemas.findOne(
 		{'account': req.body.user},
 		(err, data)=> {
 			if (err) {

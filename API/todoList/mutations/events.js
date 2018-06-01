@@ -217,9 +217,9 @@ exports.todo_evt_update = {
 					// 添加新的时间
 					result.addTime = await updateEvtCalendar({
 						account: args.usr,
-						id: args.data.eventTypeID,
-						stime: args.data.stime,
-						etime: args.data.etime
+						id: findThisData.eventTypeID,
+						stime: findThisData.stime,
+						etime: findThisData.etime
 					})
 				}
 	
