@@ -10,7 +10,7 @@ const Schema = mongoose.Schema;
 	@pwd: 密码
 	@email: 邮箱
 	@ico: 头像
-	@power: 用户权限
+	@power: 用户权限 [Admin|master|guest]
 	@reset: 找回密码Code
 
 	文档: usrs
@@ -21,8 +21,11 @@ const _usrs = new Schema({
 		require: true,
 		unique: true
 	},
+	pwd: {
+		type: String,
+		required: true
+	},
 	name   : String,
-	pwd	   : String,
 	email  : String,
 	ico	   : String,
 	power  : String,

@@ -1,11 +1,11 @@
-const { GraphQLString } = require('graphql')
-
+const { GraphQLString, GraphQLInt } = require('graphql')
 const db = require('../models/user')
+const { UserFields, userType } = require('../types')
+const res = require('../../res2')
 
-const { userType } = require('../types')
-
+// 查询用户
 exports.findUser = {
-	type: userType,
+	type: res('ResFindUser', UserFields),
 	description: '查询用户信息',
 	args: {
 		// 帐号
@@ -21,18 +21,63 @@ exports.findUser = {
 			description: '用户名'
 		} 
 	},
-	resolve(root, params) {
-		// 回调
+	resolve(root, args, req) {
+		let def = {
+			account: '',
+			name: ''
+		}
+
 	    return new Promise((resolve, reject) => {
-	    	// mongoose 查询方式
-	    	// 查询用户名或帐号
+			args = Object.assign({}, def, args)
+
 			db.findOne(
-			{ $or: [ 
-				{account: params.account }, 
-				{name: params.name} 
-			] }, 
-			(err, data) => {
-				err ? reject(err) : resolve(data)
+				{ $or: [ 
+					{account: args.account }, 
+					{name: args.name} 
+				] }, 
+				{pwd: 0},
+				(err, data) => {
+					if (err) {
+						reject(err)
+						return
+					}
+
+					if (data) {
+						resolve({
+							success: true,
+							mes: '查询成功',
+							...data._doc
+						})
+					} else {
+						resolve({
+							success: false,
+							mes: '查询失败'
+						})
+					}
+				}
+			)
+		})
+	}
+}
+
+// 查询用户总数
+exports.findUserCount = {
+	type: res('ResUserCount', {
+		count: {
+			type: GraphQLInt,
+			description: '用户总数'
+		}
+	}),
+	description: '查询用户总数',
+	args: {},
+	resolve(root, args, req) {
+		return new Promise((resolve, reject) => {
+			let count = db.count()
+
+			resolve({
+				success: true,
+				mes: '查询成功',
+				count
 			})
 		})
 	}

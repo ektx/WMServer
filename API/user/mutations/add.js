@@ -1,9 +1,7 @@
-const { GraphQLNonNull, GraphQLString } = require('graphql')
 const { userType, userIntputType } = require('../types')
-
 const db = require('../models/user')
 
-module.exports = {
+module.exports.UserAdd = {
 	type: userType,
 	description: '添加用户',
 	args: {
@@ -13,7 +11,7 @@ module.exports = {
 		}
 	},
 	resolve(root, params) {
-		console.log(params, params.data)
+
 		const uModel = new db(params.data)
 		const newUser = uModel.save();
 

@@ -4,9 +4,10 @@ const todolist = require('./todoList/mutations')
 const address = require('./myFriends/mutations')
 
 module.exports = {
-	userAdd: user.add,
-	userUpdate: user.update,
-	removeUser: user.remove,
+	// userAdd: user.add,
+	// userUpdate: user.update,
+	// removeUser: user.remove,
+	...user,
 
 	// todoList APP
 	addTodoListType: todolist.addWorkType,
