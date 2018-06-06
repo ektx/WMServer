@@ -47,10 +47,37 @@ app.use(bodyParser.json())
 // 否则无法取到 req.body
 app.use(router)
 
-app.post('/upload', multer({
-  dist: 'uploads/'
-}).array('photos', 9), (req, res, next) => {
+let storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    console.log(null, file)
+    cb(null, `${Date.now()}_${file.originalname}`)
+  }
+})
+let upload = multer({ 
+  storage,
+  limits: {
+    files: 9
+  }
+})
+app.post('/upload', upload.fields([
+  {
+    name: 'img',
+    maxCount: 2
+  },
+  {
+    name: 'video',
+    maxCount: 1
+  },
+  {
+    name: 'avatar',
+    maxCount: 9
+  }
+]), (req, res, next) => {
   console.log(req.files, req.body)
+  res.end('ok')
 })
 
 const schema = require('./API/')
