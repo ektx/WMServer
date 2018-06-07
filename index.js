@@ -5,7 +5,6 @@ const chalk = require('chalk')
 const graphqlHTTP = require('express-graphql')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-const multer = require('multer')
 
 mongoose.Promise = global.Promise
 
@@ -46,39 +45,6 @@ app.use(bodyParser.json())
 // 注意 router 要在 bodyParser 之后调用
 // 否则无法取到 req.body
 app.use(router)
-
-let storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads')
-  },
-  filename: function (req, file, cb) {
-    console.log(null, file)
-    cb(null, `${Date.now()}_${file.originalname}`)
-  }
-})
-let upload = multer({ 
-  storage,
-  limits: {
-    files: 9
-  }
-})
-app.post('/upload', upload.fields([
-  {
-    name: 'img',
-    maxCount: 2
-  },
-  {
-    name: 'video',
-    maxCount: 1
-  },
-  {
-    name: 'avatar',
-    maxCount: 9
-  }
-]), (req, res, next) => {
-  console.log(req.files, req.body)
-  res.end('ok')
-})
 
 const schema = require('./API/')
 
