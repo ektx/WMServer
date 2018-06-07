@@ -53,4 +53,12 @@ buck-out/
 */fastlane/screenshots
 
 # my set
-/uploads
+# 存放图片地址
+/upload/img/*
+!/upload/img/readme.md
+/upload/audio/*
+!/upload/audio/readme.md
+/upload/pdf/*
+!/upload/pdf/readme.md
+/upload/video/*
+!/upload/video/readme.md
