@@ -13,7 +13,7 @@ function PostLogin (req, res) {
 	let sendErr = ()=> {
 		res.send({
 			status: false,
-			msg: '没有发现数据!'
+			mes: '没有发现数据!'
 		})
 	}
 
@@ -23,7 +23,7 @@ function PostLogin (req, res) {
 			if (err) {
 				res.send({
 					status: false,
-					msg: '服务器错误!'
+					mes: '服务器错误!'
 				})				
 				return;
 			}
@@ -41,20 +41,20 @@ function PostLogin (req, res) {
 
 					res.send({
 						status: true,
-						msg: 'welcome use workMan!',
+						mes: 'welcome use workMan!',
 						token
 					})
 
 				} else {
 					res.send({
 						status: false,
-						msg: '密码不正确!'
+						mes: '密码不正确!'
 					})
 				}
 			} else {
 				res.send({
 					status: false,
-					msg: '用户不存在!'
+					mes: '用户不存在!'
 				})
 			}
 		}
