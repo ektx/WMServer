@@ -1,6 +1,7 @@
 const {
 	GraphQLObjectType,
 	GraphQLInputObjectType,
+	GraphQLInt,
 	GraphQLString
 } = require('graphql/type')
 const fieldsObj = {
@@ -46,4 +47,15 @@ exports.userIntputType = new GraphQLInputObjectType({
 	name: 'userIntType',
 	description: '添加或修改用户信息',
 	fields: () => (fieldsObj)
+})
+
+exports.userCountType = new GraphQLObjectType({
+	name: 'userCountType',
+	description: '查询用户总数',
+	fields: () => ({
+		count: {
+			type: GraphQLInt,
+			description: '注册用户总数'
+		}
+	})
 })

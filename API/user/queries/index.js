@@ -1,34 +1,31 @@
-const { GraphQLString, GraphQLInt } = require('graphql')
+const { GraphQLString, GraphQLInt, GraphQLList } = require('graphql')
 const db = require('../models/user')
-const { UserFields, userType } = require('../types')
+const { userType, userCountType } = require('../types')
 const res = require('../../res2')
 
 // 查询用户
 exports.findUser = {
-	type: res('ResFindUser', UserFields),
+	type: res('ResFindUser', {
+		type: userType,
+		description: '信息说明'
+	}, true),
 	description: '查询用户信息',
 	args: {
-		// 帐号
 		account: {
-			name: 'account',
 			type: GraphQLString,
 			description: '帐号'
 		},
-		// 用户名
 		name: {
-			name: 'name',
 			type: GraphQLString,
 			description: '用户名'
 		} 
 	},
 	resolve(root, args, req) {
-		let def = {
-			account: '',
-			name: ''
-		}
-
 	    return new Promise((resolve, reject) => {
-			args = Object.assign({}, def, args)
+			args = Object.assign({}, {
+				account: req.decoded ? req.decoded.user : '',
+				name: ''
+			}, args)
 
 			db.findOne(
 				{ $or: [ 
@@ -46,7 +43,7 @@ exports.findUser = {
 						resolve({
 							success: true,
 							mes: '查询成功',
-							...data._doc
+							data
 						})
 					} else {
 						resolve({
@@ -63,21 +60,19 @@ exports.findUser = {
 // 查询用户总数
 exports.findUserCount = {
 	type: res('ResUserCount', {
-		count: {
-			type: GraphQLInt,
-			description: '用户总数'
-		}
-	}),
+		type: userCountType,
+		description: '用户总数'
+	}, true),
 	description: '查询用户总数',
 	args: {},
 	resolve(root, args, req) {
 		return new Promise((resolve, reject) => {
-			let count = db.count()
-
 			resolve({
 				success: true,
 				mes: '查询成功',
-				count
+				data: {
+					count: db.count()
+				}
 			})
 		})
 	}
