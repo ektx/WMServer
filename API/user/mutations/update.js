@@ -5,7 +5,7 @@ const res = require('../../res2')
 
 exports.UserUpdate = {
 	// 返回修改后用户信息
-	type: res(),
+	type: res('ResUserUpdate'),
 	description: '修改用户信息',
 	args: {
 		account: {
